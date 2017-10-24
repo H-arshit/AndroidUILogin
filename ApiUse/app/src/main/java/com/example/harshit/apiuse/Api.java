@@ -30,4 +30,8 @@ public interface Api {
     Call<ResultData> getresetresult(@Body RequestData requestData);
 
 
+    @POST("userimage")
+    Call<ResultData> uploadimage(@Body ImageRequest imageRequest);
+
+
 }

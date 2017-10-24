@@ -1,15 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.harshit.apiuse.Result">
 
 
-    <TextView
+
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/result"/>
+        android:id="@+id/image_user_profile"
+        android:layout_centerInParent="true"
+        android:text="Click" />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/upload_image"
+        android:text="Upload"
 
-</android.support.constraint.ConstraintLayout>
+        android:layout_centerHorizontal="false"
+        android:layout_alignBottom="@+id/image_user_profile" />
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:id="@+id/image_user_profile_view"/>
+
+</RelativeLayout>
