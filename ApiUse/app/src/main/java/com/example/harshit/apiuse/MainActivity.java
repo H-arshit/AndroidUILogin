@@ -1,11 +1,14 @@
 package com.example.harshit.apiuse;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -20,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     EditText email , password;
     Button signin;
+    TextView createuser , forgotpaswd;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +34,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         email = (EditText)findViewById(R.id.email);
         password = (EditText)findViewById(R.id.password);
         signin = (Button)findViewById(R.id.signin);
+        forgotpaswd = (TextView)findViewById(R.id.forgotpaswd);
+        createuser = (TextView)findViewById(R.id.createuser);
 
 
 //        Retrofit retrofit = new Retrofit.Builder()
@@ -57,60 +64,85 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
 
-
+        createuser.setOnClickListener(this);
+        forgotpaswd.setOnClickListener(this);
         signin.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View view) {
 
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Api.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        Api api = retrofit.create(Api.class);
+        if(view.getId() == R.id.signin) {
+
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Api.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Api api = retrofit.create(Api.class);
 
 
-       final RequestData requestData = new RequestData();
-        requestData.setEmail(email.getText().toString());
-        requestData.setPassword(password.getText().toString());
+            final RequestData requestData = new RequestData();
+            requestData.setEmail(email.getText().toString());
+            requestData.setPassword(password.getText().toString());
 
-       Call<ResultData> result = api.getresult(requestData);
+            Call<ResultData> result = api.getresult(requestData);
 
-        result.enqueue(new Callback<ResultData>() {
-            @Override
-            public void onResponse(Call<ResultData> call, Response<ResultData> response) {
+            result.enqueue(new Callback<ResultData>() {
+                @Override
+                public void onResponse(Call<ResultData> call, Response<ResultData> response) {
 
-                ResultData resultData = response.body();
+                    ResultData resultData = response.body();
 
-                if (resultData.isvalid())
-                {
-                    Intent intent = new Intent(getBaseContext(), Result.class);
-                    intent.putExtra("email", resultData.getEmail());
-                    intent.putExtra("auth_token", resultData.getAuth_token());
-                    startActivity(intent);
+                    if (resultData.isvalid()) {
+
+
+                        final String PREF_NAME = "com.data.wfi.userdetails";
+                        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editorffordata = sharedPreferences.edit();
+
+                        editorffordata.putString("AUTH_TOKEN",resultData.getAuth_token());
+                        editorffordata.putString("EMAIL_ID",resultData.getEmail());
+                        editorffordata.apply();
+
+
+
+
+
+
+
+                        Intent intent = new Intent(getBaseContext(), Result.class);
+                        intent.putExtra("email", resultData.getEmail());
+                        intent.putExtra("auth_token", resultData.getAuth_token());
+                        startActivity(intent);
+                    } else if (resultData.getMessage().equals("User Not Present")) {
+
+                        Toast.makeText(getApplicationContext(), "User Not Present . Please Sign Up", Toast.LENGTH_LONG).show();
+                        password.setText("");
+
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Wrong Password", Toast.LENGTH_LONG).show();
+                    }
+
+
                 }
-                else if (resultData.getMessage().equals("not present"))
-                {
-                    Intent intent = new Intent(getBaseContext(), Signup.class);
-                    intent.putExtra("email", requestData.getEmail());
-                    intent.putExtra("password", requestData.getPassword());
-                    startActivity(intent);
+
+                @Override
+                public void onFailure(Call<ResultData> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Network Error", Toast.LENGTH_LONG).show();
+                    password.setText("");
+
                 }
-                else {
-                    Toast.makeText(getApplicationContext() , "Wrong Password" ,Toast.LENGTH_LONG).show();
-                }
+            });
+        }else if (view.getId() == R.id.createuser){
+            Intent intent = new Intent(getBaseContext(), Signup.class);
 
+            startActivity(intent);
+        }
+        else{
+            Intent intent = new Intent(getBaseContext(), ForgotPassword.class);
 
-
-            }
-
-            @Override
-            public void onFailure(Call<ResultData> call, Throwable t) {
-                Toast.makeText(getApplicationContext() , "Failed" ,Toast.LENGTH_LONG).show();
-            }
-        });
-
+            startActivity(intent);
+        }
 
     }
 }

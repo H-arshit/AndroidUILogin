@@ -14,7 +14,7 @@ import retrofit2.http.POST;
 public interface Api {
 
 
-    String BASE_URL = "http://192.168.0.102:3000/api/v1/";
+    String BASE_URL = "http://192.168.0.104:3000/api/v1/";
 //
 //    @GET("someurl")
 //    Call<List<ResultData>> getresult();
@@ -25,6 +25,9 @@ public interface Api {
 
     @POST("signup")
     Call<ResultData> getresultsign(@Body RequestData requestData);
+
+    @POST("resetpswd")
+    Call<ResultData> getresetresult(@Body RequestData requestData);
 
 
 }

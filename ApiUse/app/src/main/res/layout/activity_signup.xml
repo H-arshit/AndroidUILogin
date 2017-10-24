@@ -6,11 +6,37 @@
     android:layout_height="match_parent"
     tools:context="com.example.harshit.apiuse.Signup">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="LOGO"
+        android:id="@+id/logo"
+        />
+
+
+    <EditText
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_marginTop="20dp"
+        android:inputType="textEmailAddress"
+        android:id="@+id/email_signup"
+        android:layout_below="@+id/logo"
+        android:hint="email"/>
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/email_signup"
+        android:layout_marginTop="20dp"
+        android:hint="password"
+        android:inputType="textPassword"
+        android:id="@+id/password_password"/>
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:layout_below="@+id/password_password"
         android:id="@+id/phone_no"
         android:inputType="phone"
         android:hint="phone number"
@@ -23,6 +49,14 @@
         android:layout_below="@+id/phone_no"
         android:text="signup"
         android:id="@+id/signup"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/signup"
+        android:text="Log In"
+        android:id="@+id/signin_again"
         />
 
 </RelativeLayout>
