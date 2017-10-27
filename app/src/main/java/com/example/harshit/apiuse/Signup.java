@@ -70,8 +70,6 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
                    if (resultData.isvalid()) {
 
 
-
-
                        final String PREF_NAME = "com.data.wfi.userdetails";
                        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                        SharedPreferences.Editor editorffordata = sharedPreferences.edit();
