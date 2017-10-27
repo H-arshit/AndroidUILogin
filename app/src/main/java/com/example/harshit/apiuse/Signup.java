@@ -70,6 +70,9 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
                    if (resultData.isvalid()) {
 
 
+
+                       signupmongoreq(resultData.getName());
+
                        final String PREF_NAME = "com.data.wfi.userdetails";
                        SharedPreferences sharedPreferences = getBaseContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
                        SharedPreferences.Editor editorffordata = sharedPreferences.edit();
@@ -100,5 +103,33 @@ public class Signup extends AppCompatActivity implements View.OnClickListener {
 
             startActivity(intent);
         }
+    }
+
+    private void signupmongoreq(String name) {
+
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(SignUpAPI.BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        SignUpAPI api = retrofit.create(SignUpAPI.class);
+
+
+        RequestData requestData = new RequestData();
+        requestData.setName(name);
+
+        Call<ResultData> result = api.getresult(requestData);
+
+        result.enqueue(new Callback<ResultData>() {
+            @Override
+            public void onResponse(Call<ResultData> call, Response<ResultData> response) {
+                return;
+            }
+
+            @Override
+            public void onFailure(Call<ResultData> call, Throwable t) {
+                return;
+            }
+        });
+
     }
 }
