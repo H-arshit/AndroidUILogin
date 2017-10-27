@@ -26,4 +26,16 @@
         android:layout_height="100dp"
         android:id="@+id/image_user_profile_view"/>
 
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/festival_list"
+        android:text="festval"
+        android:layout_below="@+id/image_user_profile"
+        android:layout_toLeftOf="@+id/image_user_profile"
+        android:layout_toStartOf="@+id/image_user_profile"
+        android:layout_marginTop="27dp" />
+
 </RelativeLayout>

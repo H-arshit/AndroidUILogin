@@ -26,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -37,9 +38,11 @@ public class Result extends AppCompatActivity implements View.OnClickListener {
 
     Integer REQUEST_CAMERA=1,REQUEST_FILE=0;    Button image_user_profile , upload_image;
     ImageView image_user_profile_view ;
-    Bitmap upcomingimage;
+    Bitmap upcomingimage ;
     String upcomingimagecode="";
     private static final int MY_PERMISSIONS_REQUEST_READ_EXTERNAL_STORAGE = 12001;
+
+    Button  festival_list;
 
 
 
@@ -54,15 +57,64 @@ public class Result extends AppCompatActivity implements View.OnClickListener {
 
         upload_image = (Button)findViewById(R.id.upload_image);
 
+        festival_list=(Button)findViewById(R.id.festival_list);
+
         upload_image.setOnClickListener(this);
 
         image_user_profile.setOnClickListener(this);
+
+        festival_list.setOnClickListener(this);
 
 
     }
 
     @Override
     public void onClick(View view) {
+
+
+
+        if (view.getId() == R.id.festival_list)
+        {
+            Retrofit retrofit = new Retrofit.Builder()
+                    .baseUrl(Api.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            Api api = retrofit.create(Api.class);
+
+
+
+            Call<ArrayList<FestivalModel>> result = api.getallfestivals();
+
+            result.enqueue(new Callback<ArrayList<FestivalModel>>() {
+                @Override
+                public void onResponse(Call<ArrayList<FestivalModel>> call, Response<ArrayList<FestivalModel>> response) {
+                    if (response.body() == null)
+                    {
+                        return;
+                    }
+                    else
+                    {
+                        ArrayList<FestivalModel> festival_list = response.body();
+
+
+                        Intent intent = new Intent(getBaseContext() , Festivals.class);
+                        intent.putExtra("festival_list", festival_list);
+                        startActivity(intent);
+
+
+
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ArrayList<FestivalModel>> call, Throwable t) {
+
+                }
+            });
+
+
+            return;
+        }
 
         if(view.getId() == R.id.image_user_profile)
         {

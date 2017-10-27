@@ -1,5 +1,6 @@
 package com.example.harshit.apiuse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -34,4 +35,6 @@ public interface Api {
     Call<ResultData> uploadimage(@Body ImageRequest imageRequest);
 
 
+    @GET("getallfestivals")
+    Call<ArrayList<FestivalModel>> getallfestivals();
 }
